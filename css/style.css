@@ -1,0 +1,47 @@
+/*	
+	Document   : style.css
+	Author     : Eliza Witkowska (http://codebusters.pl/en/)
+	Description: Stylesheet for CodeIgniter frontend language files editor.
+*/
+* {	
+	margin: 0px 0px;
+	padding: 0px 0px;
+	border:none;
+	color: #606260;
+	list-style:none;	
+}
+
+body 
+{
+	font-size: 12px;
+	background:#d5dad5;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+#wrapper{width:900px; margin:0 auto;}
+a{text-decoration:none;}
+li,.clear {clear:both;}
+li a,.box.language,.left{float:left;}
+li form input[type="submit"],.box.files,.right{float:right;}
+input[type="submit"],input[type="button"]{background-color:#F3F3EE; border:1px solid #CCCDC9; font-size:10px; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; padding:1px 6px; cursor:pointer;}
+.box,.error,.msg{background:#f3f3ee;  border:1px solid #cccdc9; -webkit-box-shadow: 1px 1px 1px #d8ddd8; -moz-box-shadow: 1px 1px 1px #d8ddd8; box-shadow: 1px 1px 1px #d8ddd8; display:block; padding:15px;  margin-bottom:10px;border-radius:15px; -moz-border-radius:15px; -webkit-border-radius:15px; margin:10px;}
+.box.language{width:235px; line-height:200%;}
+.box.language .no-float input[type="submit"]{float:none; margin-left:0px;}
+.box.language.listyle ul li{list-style:disc outside; margin-left:15px;}
+.box li form input[type="submit"]{margin-left:10px;}
+.box li{padding: 5px 0;}
+.box.files li{border-bottom:1px solid #e8eedd;}
+.box.files {width: 560px;}
+.msg{background-color:#ccee97 !important; font-weight: bold;}
+.error{background: #d44545 !important; color: #ffffff; font-weight: bold;}
+input[type="text"],textarea{background: #f8f8f3;border: 1px solid #CCCDC9; padding: 4px; border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; font-size: 12px; color:#333333;}
+#create_file_form,#new_lang_form{margin-top:10px; border-top:1px dashed; padding-top:10px;}
+.row{margin-top:10px; border-bottom:1px dashed #cccddd; padding-bottom:10px;}
+.row input[type="text"],textarea{width:545px;}
+.row input[type="text"].comment{width:400px;}
+.row .comments label{padding-top:4px; margin-right:5px;}
+.row .comments{margin-top:5px;}
+.row .comments label,.row .comments input[type="text"]{color:#999;}
+.row label{margin-bottom:5px; display:block; color:#437394; font-weight:bold;}
+small{color:red;}
+.delete_key{margin-bottom:5px; margin-right:5px;}
+.pattern{margin-bottom:7px; color:#8b9297;}
