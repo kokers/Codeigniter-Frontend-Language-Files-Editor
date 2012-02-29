@@ -9,7 +9,7 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$('.button_del').click(function(){
-         var answer = confirm('<?php echo $this->lang->line('language_confirm_lang_delete');?>');
+			var answer = confirm('<?php echo $this->lang->line('language_confirm_lang_delete');?>');
 			return answer; // answer is a boolean
 		});
 		$('#new_lang_form').hide();
@@ -17,7 +17,7 @@
 			$('#new_lang_form').toggle();
 		});
    });
-   </script>
+	</script>
 </head>
 <body>
 	<div id="wrapper">

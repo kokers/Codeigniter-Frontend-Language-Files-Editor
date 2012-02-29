@@ -39,7 +39,9 @@ class Model_language extends CI_Model {
 	 * @return	array
 	 */
 	function get_list_lfiles($dir){
-		if(!is_dir(APPPATH."language/$dir/")){ return FALSE; }
+		if(!is_dir(APPPATH."language/$dir/")){
+			return FALSE;
+		}
 		$dir = APPPATH."language/$dir/";
 		$dh  = opendir($dir);
 		while (false !== ($filename = readdir($dh))) {
@@ -57,7 +59,9 @@ class Model_language extends CI_Model {
 	 * @return	int
 	 */
 	function get_count_lfiles($dir){
-		if(!is_dir(APPPATH."language/$dir/")){ return FALSE; }
+		if(!is_dir(APPPATH."language/$dir/")){
+			return FALSE;
+		}
 		$dir = APPPATH."language/$dir/";
 		$dh  = opendir($dir);
 		$i=0;
@@ -96,12 +100,12 @@ class Model_language extends CI_Model {
 	 * @return	array
 	 */
 	function get_keys_from_db($file){
-      $this->db->select('key as `keys`');
-      $r = $this->db->get_where('language_keys', array('filename' => $file));
+		$this->db->select('key as `keys`');
+		$r = $this->db->get_where('language_keys', array('filename' => $file));
 		if($r->num_rows()){
-         $result=$r->result();
+			$result=$r->result();
 			foreach($result as $row){
-            $tab[]=$row->keys;
+				$tab[]=$row->keys;
 			}
 		}
 		return (!empty($row)) ? $tab : FALSE;
@@ -114,12 +118,12 @@ class Model_language extends CI_Model {
 	 * @return	array
 	 */
 	function get_comments_from_db($file){
-      $this->db->select('key as `keys`,comment');
-      $r = $this->db->get_where('language_keys', array('filename' => $file));
+		$this->db->select('key as `keys`,comment');
+		$r = $this->db->get_where('language_keys', array('filename' => $file));
 		if($r->num_rows()){
-         $result=$r->result();
+			$result=$r->result();
 			foreach($result as $row){
-            $tab[$row->keys]=$row->comment;
+				$tab[$row->keys]=$row->comment;
 			}
 		}
 		return (!empty($row)) ? $tab : FALSE;
@@ -145,17 +149,17 @@ class Model_language extends CI_Model {
 	 * @return	bool
 	 */
 	function add_keys($keys,$file){
-      if(!is_array($keys)){
-         return FALSE;
-      }
-      foreach ($keys as $k){
-         $data[] = array(
-            'key'=>$k,
-            'filename'=>$file
-         );
-      }
-      $this->db->insert_batch('language_keys',$data);
-      return ($this->db->affected_rows()) ? TRUE : FALSE;
+		if(!is_array($keys)){
+			return FALSE;
+		}
+		foreach ($keys as $k){
+			$data[] = array(
+				'key'=>$k,
+				'filename'=>$file
+			);
+		}
+		$this->db->insert_batch('language_keys',$data);
+		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
 
@@ -188,29 +192,29 @@ class Model_language extends CI_Model {
 	 * @param string
 	 * @return	bool
 	 */
-   function delete_all_keys($file){
-      $this->db->delete('language_keys',array('filename'=>$file));
-      return ($this->db->affected_rows()) ? TRUE : FALSE;
+	function delete_all_keys($file){
+		$this->db->delete('language_keys',array('filename'=>$file));
+		return ($this->db->affected_rows()) ? TRUE : FALSE;
 	}
 
-   function delete_one_key($key,$file){
-      $this->db->delete('language_keys',array('filename'=>$file,'key'=>$key));
-      return ($this->db->affected_rows()) ? TRUE : FALSE;
-   }
+	function delete_one_key($key,$file){
+		$this->db->delete('language_keys',array('filename'=>$file,'key'=>$key));
+		return ($this->db->affected_rows()) ? TRUE : FALSE;
+	}
 
-   function add_comments($com,$file){
-      if(!is_array($com)){
-         return FALSE;
-      }
-      $this->db->trans_start();
-      foreach ($com as $k=>$c){
-         $this->db->where('key', $k);
-         $this->db->where('filename', $file);
-         $this->db->update('language_keys',array('comment'=>$c));
-      }
-      $this->db->trans_complete();
+	function add_comments($com,$file){
+		if(!is_array($com)){
+			return FALSE;
+		}
+		$this->db->trans_start();
+		foreach ($com as $k=>$c){
+			$this->db->where('key', $k);
+			$this->db->where('filename', $file);
+			$this->db->update('language_keys',array('comment'=>$c));
+		}
+		$this->db->trans_complete();
 		return ($this->db->trans_status()) ? TRUE : FALSE;
-   }
+	}
 
 }
 /* End of file model_language.php */

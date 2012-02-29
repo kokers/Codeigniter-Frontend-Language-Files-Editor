@@ -23,9 +23,9 @@ class Language extends CI_Controller{
 		$this->load->helper(array('url','file','language','form')); //load this helpers if youre not doing it in autoload
 		$this->load->model(array('model_language'));
 		$this->load->library(array('session')); //load session if youre not doing it in autoload
-      $this->load->database(); //load database if youre not doing it in autoload
-      $this->load->language('language','english'); //you can delete it if you have translation for you language
-      $this->config->load('language_editor');
+		$this->load->database(); //load database if youre not doing it in autoload
+		$this->load->language('language','english'); //you can delete it if you have translation for you language
+		$this->config->load('language_editor');
 	}
 
 	function index(){
@@ -64,18 +64,18 @@ class Language extends CI_Controller{
 				'language'=>$l,
 				'file'=>$file
 			);
-         $data['keys'] = $this->model_language->get_keys_from_db($file); /// get keys for this file
-         if($this->config->item('comments')==1){
-            $data['comments'] = $this->model_language->get_comments_from_db($file);
-         }
+			$data['keys'] = $this->model_language->get_keys_from_db($file); /// get keys for this file
+			if($this->config->item('comments')==1){
+				$data['comments'] = $this->model_language->get_comments_from_db($file);
+			}
 			if($data['keys']!==FALSE){
 				$data['extra_keys'] = array_diff(array_keys($lang),$data['keys']); ///get keys that are in file but not in database
 			}
-         $data['dir'] = $this->model_language->get_languages();
-         if($this->config->item('language_pattern')==1 && $l!=$this->config->item('language_pattern_lang') && file_exists(APPPATH."language/{$this->config->item('language_pattern_lang')}/$file")){
-            require(APPPATH."language/{$this->config->item('language_pattern_lang')}/$file");
-            $data['pattern']=$lang;
-         }
+			$data['dir'] = $this->model_language->get_languages();
+			if($this->config->item('language_pattern')==1 && $l!=$this->config->item('language_pattern_lang') && file_exists(APPPATH."language/{$this->config->item('language_pattern_lang')}/$file")){
+				require(APPPATH."language/{$this->config->item('language_pattern_lang')}/$file");
+				$data['pattern']=$lang;
+			}
 			$this->load->view('language/edit_lang_file',$data);
 		}else{
 			$this->session->set_flashdata('error',$this->lang->line('language_error_dir_not_exist'));
@@ -160,22 +160,22 @@ class Language extends CI_Controller{
 					$keys=FALSE;
 				}
 				foreach($_POST as $key=>$value){ /// create new array
-               if($keys!==FALSE&&in_array($key,$keys)){
-                  if($this->input->post('comment_'.$key)){
-                     $comments[$key] = $this->input->post('comment_'.$key);
-                     $f .= '/* '.$this->input->post('comment_'.$key).' */'."\n";
-                  }else{
-                     $comments[$key] = '';
-                  }
+					if($keys!==FALSE&&in_array($key,$keys)){
+						if($this->input->post('comment_'.$key)){
+							$comments[$key] = $this->input->post('comment_'.$key);
+							$f .= '/* '.$this->input->post('comment_'.$key).' */'."\n";
+						}else{
+							$comments[$key] = '';
+						}
 						$f .= '$lang[\''.$key.'\']=\''; ///for language array
 						$f .= addslashes($this->input->post($key,TRUE)).'\';'."\n";		///for language array		, add escaping "
 					}elseif($pos=strpos($key,'new_key_')!==FALSE){ /// check if there is new key -> strpos is faster than substr
 						$new_key = $this->prepare_str(trim($this->input->post($key,TRUE)));
 						if(!empty($new_key)){
-                     if(!in_array($new_key,$keys) && !in_array($new_key,$new_keys)){
-                        if($this->input->post('comment_'.$key)){
-                           $f .= '/* '.$this->input->post('comment_'.$key).' */'."\n";
-                        }
+							if(!in_array($new_key,$keys) && !in_array($new_key,$new_keys)){
+								if($this->input->post('comment_'.$key)){
+									$f .= '/* '.$this->input->post('comment_'.$key).' */'."\n";
+								}
 								$f .= '$lang[\''.$new_key.'\']=\''; ///for language array
 								$f .= addslashes($this->input->post('new_value_'.substr($key,-1))).'\';'."\n"; ///for language array
 								$new_keys[]=$new_key;
@@ -185,10 +185,10 @@ class Language extends CI_Controller{
 				}
 				$f.= '/* End of file '.$file.' */'; ///closing tags
 				///Before we go on, copy files just in case.
-            if(!isset($new_keys) || (!empty($new_keys) && is_array($new_keys) && $this->model_language->add_keys($new_keys,$file))){
-               if(isset($comments) && !empty($comments)){
-                  $this->model_language->add_comments($comments,$file);
-               }
+				if(!isset($new_keys) || (!empty($new_keys) && is_array($new_keys) && $this->model_language->add_keys($new_keys,$file))){
+					if(isset($comments) && !empty($comments)){
+						$this->model_language->add_comments($comments,$file);
+					}
 					copy(APPPATH."language/$l/$file",APPPATH."language/$l/backup_$file");
 					$r = file_put_contents(APPPATH."language/$l/$file",$f,LOCK_EX);	///save language file
 					if($r){
@@ -228,7 +228,6 @@ class Language extends CI_Controller{
 					$file = $file.'_lang.php';
 				}
 				if(is_dir(APPPATH."language/$l/") && !file_exists(APPPATH."language/$l/$file")){
-					//echo strlen($file);
 					if(!empty($lang_ref) && is_dir(APPPATH."language/$lang_ref/") && file_exists(APPPATH."language/$lang_ref/$file")){
 						if(copy(APPPATH."language/$lang_ref/$file",APPPATH."language/$l/$file")){
 							$this->session->set_flashdata('msg',$this->lang->line('language_file_created'));
@@ -239,17 +238,14 @@ class Language extends CI_Controller{
 						}
 					}else{
 						$f = "<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');"."\n"; /// begin file with standard line
-						//$f .= "\$lang = array();"."\n"; /// our language array
-                  $keys = $this->model_language->get_keys_from_db($file);
+						$keys = $this->model_language->get_keys_from_db($file);
 						if(is_array($keys)){
-                     foreach($keys as $key){ /// create new array
-                        $f .= '$lang[\''.$key.'\']=\'\';'."\n"; ///for language array
-								//$f .= "'".$key."'=>"; ///for language array
-								//$f .= "\"\","."\n";		///for language array		, add escaping "
+							foreach($keys as $key){ /// create new array
+								$f .= '$lang[\''.$key.'\']=\'\';'."\n"; ///for language array
 							}
-                  }else{
-                     $f .= "\$lang = array();"."\n"; /// our language array
-                  }
+						}else{
+							$f .= "\$lang = array();"."\n"; /// our language array
+						}
 						$f.= '/* End of file '.$file.' */';
 						if(file_put_contents(APPPATH."language/$l/$file",utf8_encode($f),LOCK_EX)){
 							$this->session->set_flashdata('msg','File created.');
@@ -352,7 +348,6 @@ class Language extends CI_Controller{
 		redirect('/language');
 	}
 
-
 	/**
 	 * Delete key from database and all files. Call by AJAX.
 	 *
@@ -387,10 +382,10 @@ class Language extends CI_Controller{
 						}
 					}
 				}
-            $this->model_language->delete_one_key($del_key,$file);
-            echo json_encode(array('response'=>TRUE,'msg'=>$this->lang->line('language_key_deleted')));
+				$this->model_language->delete_one_key($del_key,$file);
+				echo json_encode(array('response'=>TRUE,'msg'=>$this->lang->line('language_key_deleted')));
 			}else{
-            echo json_encode(array('response'=>FALSE,'msg'=>$this->lang->line('language_error_dir_not_exist')));
+				echo json_encode(array('response'=>FALSE,'msg'=>$this->lang->line('language_error_dir_not_exist')));
 			}
 		}
 	}
@@ -399,7 +394,7 @@ class Language extends CI_Controller{
 	 * Prepare string by removing unwanted signs
 	 *
 	 * @param string
-	 * @return string
+	 * @return string0tring
 	 */
 	function prepare_str($string){
 		$from = array('ą','ć','ę','ł','ó','ń','ś','ż','ź',' '); ///polish signs
