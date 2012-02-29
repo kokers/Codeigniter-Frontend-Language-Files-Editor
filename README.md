@@ -21,6 +21,13 @@ Requirements
 
 Codeigniter 2.x, jQuery, database
 
+Installation
+-----------
+
+Grab it from github and extract to corresponding folders.
+ 
+Be aware that there is `application/core/MY_Lang.php` file, so if you use i18n for multilanguage or any other library for that purpose most likely you have MY_Lang in that folder already. So be sure that you want to overwrite it.
+
 How it works
 -----------
 
@@ -44,7 +51,7 @@ All translations are escaped by `addslashes` php function. So if you're using `$
 
 If you have CSRF protection on - remember that it has expire time - so don't edit your files too long ;o) 
 
-I assume that if you want a line break in your translation, you need to add <br/> tag.
+I assume that if you want a line break in your translation, you need to add `<br/>` tag.
 
 This frontend already use language class. All buttons, information etc are already put into `language_lang.php` file so you can translate it into your language. 
 
