@@ -142,6 +142,43 @@ class Language extends CI_Controller{
 		}
 	}
 
+
+	/**
+	 * Add one key to database.
+	 *
+	 * @return void
+	 */
+	function add_one_key(){
+		if($this->input->post('add_key')){
+			$l = $this->prepare_str($this->input->post('language'));
+			$file = $this->input->post('filename');
+			if(!empty($l) && !empty($file) && is_dir(APPPATH."language/$l/") && file_exists(APPPATH."language/$l/$file")){ ///check if hidden fields are passed and if they exists
+				require(APPPATH."language/$l/$file");
+				$keys = $this->model_language->get_keys_from_db($file);
+				$new_key = $this->input->post('key');
+				if(!is_array($lang) || !is_array($keys)){
+					redirect("/language/lang_file/$l/$file");
+				}
+				if(!in_array($new_key,$keys) && array_key_exists($new_key,$lang)){ ///check if its indeed new key that is in file but not in db
+					if($this->model_language->add_keys(array($new_key),$file)){
+						$this->session->set_flashdata('msg',$this->lang->line('language_msg_success'));
+					}else{
+						$this->session->set_flashdata('error',$this->lang->line('language_error'));
+					}
+				}else{
+					$this->session->set_flashdata('error',$this->lang->line('language_error'));
+				}
+				redirect("/language/lang_file/$l/$file");
+			}else{
+				$this->session->set_flashdata('error',$this->lang->line('language_error_dir_not_exist'));
+				redirect('/language');
+			}
+		}else{
+			$this->session->set_flashdata('error',$this->lang->line('language_error_no_direct_access'));
+			redirect('/language');
+		}
+	}
+
 	/**
 	 * Update language file.
 	 * If new keys were added, add them to database so they could be available for another language
@@ -366,17 +403,22 @@ class Language extends CI_Controller{
 				if(is_array($in_lang)){
 					foreach($in_lang as $in){
 						unset($lang);
+						if($this->config->item('comments')==1){
+							$comments = $this->model_language->get_comments_from_db($file);
+						}
 						require(APPPATH."language/$in/$file");
 						if(array_key_exists($del_key,$lang)){
-							$f = "<?php  if (!defined('BASEPATH')) exit('No direct script access allowed');"."\n"; /// begin file with standard line
-							$f .= "\$lang = array("."\n"; /// our language array
-								foreach($lang as $key_lang=>$val){ /// create new array
-									if($key_lang!=$del_key){
-										$f .= "'".$key_lang."'=>"; ///for language array
-										$f .= "\"$val\","."\n";		///for language array		, add escaping "
+							$f = '<?php  if (!defined(\'BASEPATH\')) exit(\'No direct script access allowed\');'."\n"; /// begin file with standard line
+							foreach($lang as $key_lang=>$val){ /// create new array
+								if($key_lang!=$del_key){
+									if(isset($comments) && array_key_exists($key_lang,$comments) && !empty($comments[$key_lang])){
+										$f .= '/* '.$comments[$key_lang].' */'."\n";
 									}
+									$f .= '$lang[\''.$key_lang.'\']=\''; ///for language array
+									$f .= addslashes($val).'\';'."\n";		///for language array		, add escaping "
 								}
-							$f.= ");?>"; ///closing tags
+							}
+							$f.= '/* End of file '.$file.' */'; ///closing tags
 							copy(APPPATH."language/$in/$file",APPPATH."language/$in/backup_$file");
 							file_put_contents(APPPATH."language/$in/$file",$f,LOCK_EX);
 						}
