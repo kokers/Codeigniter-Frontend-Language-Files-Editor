@@ -58,7 +58,7 @@
 				endforeach; ?>
 				</ul>
 			</div>
-			<?php } ?>
+			<?php endif; ?>
 		</div>
 		<?php if($keys===FALSE && !empty($lang)): ?>
 		<div class="box files">
