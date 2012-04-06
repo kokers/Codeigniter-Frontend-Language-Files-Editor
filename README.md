@@ -60,6 +60,14 @@ Comments
 
 You can add comments to your `key=>translation`. They are stored in database and added as `/* comment */` after saving changes in file. Comments are shared to the same files for different languages. You can disable it in `config/language_editor.php` file.
 
+Todo
+-----------
+
+* Switch button between input/textarea for translations
+* textarea config - on/off/string length for which textarea will be not input
+* line break support - on/off
+
+
 License
 -----------
 
