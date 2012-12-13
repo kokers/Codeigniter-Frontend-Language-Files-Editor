@@ -3,6 +3,20 @@ CodeIgniter Frontend Language Files Editor
 
 It's a frontend for editing language files for CodeIgniter 2.x stored in `/application/language` directory.
 
+WARNING!
+-----------
+It's not a good idea to put this files unprotected on production server.
+
+It's probably ok on localhost when your project is still in development. But **you should implement some authentication** before go live.
+
+If you use some library for authentication, add one line to contructor in controller like:
+
+```
+if(!login){
+  show_404();
+}
+```
+
 Basic idea
 -----------
 
