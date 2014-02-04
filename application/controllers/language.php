@@ -222,7 +222,7 @@ class Language extends CI_Controller{
 				}
 				$f.= '/* End of file '.$file.' */'; ///closing tags
 				///Before we go on, copy files just in case.
-				if(!isset($new_keys) || (!empty($new_keys) && is_array($new_keys) && $this->model_language->add_keys($new_keys,$file))){
+				if(isset($new_keys) || (!empty($new_keys) && is_array($new_keys) && $this->model_language->add_keys($new_keys,$file))){
 					if(isset($comments) && !empty($comments)){
 						$this->model_language->add_comments($comments,$file);
 					}
